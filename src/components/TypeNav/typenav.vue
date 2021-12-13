@@ -24,7 +24,7 @@
       <li><a href="">闪购</a></li>
       <li><a href="">团购</a></li>
       <li><a href="">有趣</a></li>
-      <li><a href="">秒杀</a></li>
+      <li><a href="">杀</a></li>
     </ul>
 
   </div>
