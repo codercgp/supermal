@@ -7,7 +7,7 @@
       <a>免费注册</a>
     </div>
     <div class="rightWarp">
-      <a >我的订单</a>
+      <a>我的订单</a>
       <span>|</span>
       <a>我的购物车</a>
       <span>|</span>
@@ -26,10 +26,10 @@
     <div class="logo">
       <img src="./logo.png">
     </div>
-   <div class="search">
-     <input  type="text" v-model="keyword"/>
-     <div class="searchbtn" @click="gosearch">搜索</div>
-   </div>
+    <div class="search">
+      <input type="text" v-model="keyword"/>
+      <div class="searchbtn" @click="gosearch">搜索</div>
+    </div>
   </header>
 </template>
 <script>
@@ -45,9 +45,8 @@ export default {
   methods: {
     gosearch () {
       if (this.$route.query) {
-        const location = { name: 'search', params: { keyword: this.keyword || undefined } }
+        const location = { name: 'Search', params: { keyword: this.keyword } }
         location.query = this.$route.query
-        console.log(location)
         this.$router.push(location)
       }
       this.keyword = ''
@@ -56,66 +55,75 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.header{
+.header {
   position: relative;
   height: 30px;
   width: 100%;
   background: #eee;
-  .leftWarp{
+
+  .leftWarp {
     height: 60px;
     float: left;
-    margin-left:150px;
+    margin-left: 150px;
     text-align: center;
     line-height: 1.8rem;
     font-size: 14px;
-    span:nth-child(1){
+
+    span:nth-child(1) {
       margin-right: 10px;
     }
-   .icon{
-     margin-left: 5px;
-     margin-right: 5px;
-     color: #ccc;
-   }
+
+    .icon {
+      margin-left: 5px;
+      margin-right: 5px;
+      color: #ccc;
+    }
   }
-  .rightWarp{
+
+  .rightWarp {
     text-align: center;
     line-height: 1.8rem;
     float: right;
     margin-right: 150px;
     font-size: 14px;
-    span{
+
+    span {
       margin-left: 5px;
       margin-right: 5px;
     }
   }
-  .logo{
+
+  .logo {
     position: absolute;
-    top:60px;
+    top: 60px;
     left: 150px;
   }
- .search{
-   position: absolute;
-   top:60px;
-   right: 500px;
-   right: 300px;
-  input{
-    border: 1px solid orangered;
-    width: 300px;
-    height: 25px;
-    outline: orangered;
-  }
-  .searchbtn{
+
+  .search {
     position: absolute;
-    top:0px;
-    left: 300px;
-    width: 50px;
-    height: 27px;
-    background: orangered;
-    color: #fff;
-    text-align: center;
-    font-size: 14px;
-    line-height: 1.5rem;
+    top: 60px;
+    right: 500px;
+    right: 300px;
+
+    input {
+      border: 1px solid orangered;
+      width: 300px;
+      height: 25px;
+      outline: orangered;
+    }
+
+    .searchbtn {
+      position: absolute;
+      top: 0px;
+      left: 300px;
+      width: 50px;
+      height: 27px;
+      background: orangered;
+      color: #fff;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5rem;
+    }
   }
- }
 }
 </style>

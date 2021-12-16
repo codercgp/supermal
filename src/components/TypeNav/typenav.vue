@@ -84,7 +84,7 @@ export default {
     // 点击跳转搜索页面
     gosearch(event){
       // 携带query参数，categoryName与当前对应的分类Id
-      let location={name:'search'}
+      let location={name:'Search'}
       let query={categoryName:event.target.dataset.name}
       // console.log(event.target.dataset)
      if(event.target.dataset.category1id){
@@ -176,19 +176,21 @@ export default {
     position: absolute;
     top: 47px;
     left: 320px;
-    width: 900px;
-    height: 600px;
+    width: 1100px;
+    height: 450px;
     font-size: 14px;
     .one{
       float: left;
-      width: 200px;
+      width: 145px;
     }
 
     .two{
       float: left;
-      width: 600px;
+      position: relative;
+      z-index: 999;
+      width: 801px;
       height: 100%;
-
+       background: #eeeeee;
     }
     .rightitem{
       width: 100%;
