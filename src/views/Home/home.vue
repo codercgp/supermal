@@ -6,9 +6,7 @@
     <ListContainer/>
     <referrals/>
     <Like/>
-    <Floor v-for="(item,index) in shoplist" :key="index"
-           :carouselList="item.carouselList" :keywords="item.keywords" :navList="item.navList"
-           :recommendList="item.recommendList"
+    <Floor v-for="(item,index) in shoplist" :key="index" :list="item"
     />
   </div>
 </template>

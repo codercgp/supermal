@@ -182,6 +182,9 @@ export default {
     .one{
       float: left;
       width: 145px;
+      position: relative;
+      background-color: #eeeeee;
+      z-index: 999;
     }
 
     .two{

@@ -89,7 +89,7 @@ export default {
   background: #cccccc;
   position: absolute;
   left: 0;
-  top:2600px;
+  top:2300px;
 .shopinfo{
   width: 70%;
   height: 100%;
