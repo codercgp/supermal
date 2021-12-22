@@ -6,9 +6,9 @@
   </div>
 </template>
 <script>
-console.log('分支1')
 import Header from '@/components/header'
 import Footer from '@/components/Footer/footer'
+console.log('分支1')
 export default {
   name: 'App',
   components: {
