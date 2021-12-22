@@ -3,50 +3,39 @@
     <typenav/>
     <div class="main">
       <div class="py-container">
-        <!--bread-->
-        <div class="bread">
+        <!--bread面包屑区域-->
+        <div class="bread" >
           <ul class="fl sui-breadcrumb">
             <li>
               <a href="#">全部结果</a>
             </li>
           </ul>
-          <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+          <ul class="fl sui-tag" style="position: relative;z-index: 9999">
+            <li class="with-x" v-show="queryList.categoryName">{{queryList.categoryName}}<i @click="removecategoryName">×</i></li>
+            <li class="with-x" v-show="queryList.keyword">{{queryList.keyword}}<i @click="removeKeyword">×</i></li>
+            <li class="with-x" v-if="queryList.trademark">{{queryList.trademark.split(':')[1]}}<i @click="removetrademark">×</i></li>
+            <li class="with-x" v-for="(item,index) in queryList.props" :key="index">{{item.split(":")[1]}}<i @click="removeattr(index)">×</i></li>
           </ul>
         </div>
 
-        <!--selector-->
-        <SearchSelector  :searchlist="searchlist.attrsList"/>
+        <!--中间属性部分-->
+        <SearchSelector  :searchlist="searchlist.attrsList" :trademarkList="searchlist.trademarkList" @trademarkinfo="trademarkinfo" @attrInfo="attrInfo"/>
 
-        <!--details-->
+        <!--商品详情部分-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li  :class="queryList.order.split(':')[0]==='1'? 'active' :''">
+                  <a  @click="isone('1')">综合<i :class="queryList.order.split(':')[1]==='asc' ?'el-icon-top':'el-icon-bottom'" v-show="queryList.order.split(':')[0]==='1'"></i></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="queryList.order.split(':')[0]==='2'? 'active' :''">
+                  <a  @click="isone('2')">价格<i :class="queryList.order.split(':')[1]==='asc' ? 'el-icon-top': 'el-icon-bottom'" v-show="queryList.order.split(':')[0]==='2'"></i></a>
                 </li>
               </ul>
             </div>
           </div>
+<!--          商品信息-->
           <div class="goods-list">
             <ul class="yui3-g">
               <li class="yui3-u-1-5" v-for="(item,index) in searchlist.goodsList" :key="index">
@@ -74,35 +63,8 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+<!--          分页器-->
+          <pagination pageNo="10" pageSize="10" total="102" continue="5"/>
         </div>
       </div>
     </div>
@@ -125,9 +87,9 @@ export default {
         keyword: '',
         props: [],
         trademark: '',
-        order: '',
-        pageNo: '',
-        pageSize: ''
+        order: '1:asc',
+        pageNo: 1,
+        pageSize: 10
       }
 
     }
@@ -144,12 +106,89 @@ export default {
   },
   watch: {
     $route (newValue, oldvalue) {
-      console.log(newValue, oldvalue)
+      // 每一次请求完毕，应该把相应的1、2、3级分类的id置空的，让他接受下一次的相应1、2、3
+      // 再次发请求之前整理带给服务器参数
+      Object.assign(this.queryList, this.$route.query, this.$route.params)
+      // console.log('this.$route.params', this.$route.params)
+      // 再次发起ajax请求
+      this.getsearchData()
+      // 清除缓存
+      this.queryList.category1Id = undefined
+      this.queryList.category2Id = undefined
+      this.queryList.category3Id = undefined
     }
   },
   methods: {
     getsearchData () {
+      console.log(this.queryList)
       this.$store.dispatch('searchlist', this.queryList)
+    },
+    // // 清除面包屑的分类名称的事件回调
+    removecategoryName () {
+      this.queryList.categoryName = undefined
+      this.queryList.category1Id = undefined
+      this.queryList.category2Id = undefined
+      this.queryList.category3Id = undefined
+      // 路由跳转  重新发送请求
+      this.getsearchData()
+      if (this.$route.params) {
+        this.$router.push({ name: 'Search', params: this.$route.params })
+      }
+    },
+    // 清除面包屑的关键字
+    removeKeyword () {
+      // 清除
+      this.queryList.keyword = undefined
+      // 重新发起请求
+      this.getsearchData()
+      // 通知header兄弟组件置空
+      this.$bus.$emit('removeKeyword')
+      if (this.$route.query) {
+        this.$router.push({ name: 'Search', query: this.$route.query })
+      }
+    },
+    // 自定义品牌的回调
+    trademarkinfo (name) {
+      this.queryList.trademark = `${name.tmId}:${name.tmName}`
+      console.log(this.queryList.trademark)
+      // 发送请求
+      this.getsearchData()
+    },
+    // 自定义事件属性事件的回调
+    attrInfo (a, b, c) {
+      // 整理参数。要求[“属性id：属性值：属性名”]
+      const qery = `${a}:${b}:${c}`
+      if (this.queryList.props.indexOf(qery) === -1) {
+        this.queryList.props.push(qery)
+      }
+      // 再次发送请求
+      this.getsearchData()
+    },
+    // 清除品牌的回调
+    removetrademark () {
+      this.queryList.trademark = undefined
+      this.getsearchData()
+    },
+    // 清除props中的属性
+    removeattr (index) {
+      this.queryList.props.splice(index, 1)
+      // 再次发送请求
+      this.getsearchData()
+    },
+    // 判断当前用户点击的是价格还是综合
+    isone (flag) {
+      const originorder = this.queryList.order
+      const originFlag = originorder.split(':')[0]
+      let originsort = originorder.split(':')[1]
+      let neworder = ''
+      if (flag === originFlag) {
+        neworder = `${originFlag}:${originsort === 'desc' ? 'asc' : 'desc'}`
+      } else {
+        originsort = 'desc'
+        neworder = `${flag}:${originsort}`
+      }
+      this.queryList.order = neworder
+      this.getsearchData()
     }
   },
   computed: {

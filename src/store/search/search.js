@@ -8,14 +8,11 @@ const mutations = {
   }
 }
 const actions = {
-  async searchlist ({ commit }, queryList) {
-    const res = await searchList({
-      data: queryList
-    })
+  async searchlist ({ commit }, params = {}) {
+    const res = await searchList(params)
     if (res.code === 200) {
       commit('GETSEARCHLIST', res.data)
     }
-    console.log(res.data)
   }
 }
 const getters = {}

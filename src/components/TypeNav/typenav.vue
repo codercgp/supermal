@@ -3,8 +3,8 @@
     <ul class="typenavList">
       <li class="firstItem"  >
         <a href=""  class="allshop" @mouseenter="isshowshop" >全部商品分类  </a>
-          <div class="shopwarp" @mouseleave="isshowleave" @click="gosearch($event)">
-            <div class="one" >
+          <div class="shopwarp"  @mouseleave="isshowleave" @click="gosearch($event)">
+            <div class="one"  >
               <div v-show="isshowOne" class="leftList" v-for="(c1,index) in shopList" :key="index">
                 <span :data-name="c1.categoryName"  :data-category1Id="c1.categoryId" @mouseenter="itemHover(c1)" @mouseleave="notHover()">{{ c1.categoryName }}</span>
               </div>
@@ -48,8 +48,8 @@ export default {
   },
   mounted () {
     this.$store.dispatch('getTypeList')
-    if(this.$route.path =='/search'){
-      this.isshowOne=false
+    if (this.$route.path == '/search') {
+      this.isshowOne = false
     }
   },
   methods: {
@@ -59,22 +59,21 @@ export default {
     },
     // 一级分类的显示与隐藏，鼠标进入
     isshowshop () {
-      //如果当前不是home页面  不显示
-      this.isshowOne =true
+      // 如果当前不是home页面  不显示
+      this.isshowOne = true
     },
     // 鼠标移出，
     isshowleave () {
-      if(this.$route.path =='/search'){
+      if (this.$route.path !== '/') {
+        console.log('鼠标移出一级分类')
         this.isshowOne = false
       }
-
     },
     itemHover: throttle(function (item) {
       this.two.isHover = true
       this.two.arrayItems = item
     }, 50),
 
-    // throttle(itemHover,1000)
     notHover: function () {
       this.two.isHover = false
     },
@@ -82,26 +81,25 @@ export default {
       this.two.isHover = false
     },
     // 点击跳转搜索页面
-    gosearch(event){
+    gosearch (event) {
       // 携带query参数，categoryName与当前对应的分类Id
-      let location={name:'Search'}
-      let query={categoryName:event.target.dataset.name}
+      const location = { name: 'Search' }
+      const query = { categoryName: event.target.dataset.name }
       // console.log(event.target.dataset)
-     if(event.target.dataset.category1id){
-       // 标识当前在一级分类
-       query.category1Id=event.target.dataset.category1id
-     }else  if(event.target.dataset.category2id){
-       //标识当前点击的是二级分类
-       query.category2Id=event.target.dataset.category2id
-     }else {
-       query.category3Id=event.target.dataset.category3id
-     }
-     if(this.$route.params){
-       location.query=query
-       location.params=this.$route.params
-       this.$router.push(location)
-     }
-
+      if (event.target.dataset.category1id) {
+        // 标识当前在一级分类
+        query.category1Id = event.target.dataset.category1id
+      } else if (event.target.dataset.category2id) {
+        // 标识当前点击的是二级分类
+        query.category2Id = event.target.dataset.category2id
+      } else {
+        query.category3Id = event.target.dataset.category3id
+      }
+      if (this.$route.params) {
+        location.query = query
+        location.params = this.$route.params
+        this.$router.push(location)
+      }
     }
   },
   computed: {

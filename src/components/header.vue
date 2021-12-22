@@ -42,6 +42,11 @@ export default {
       keyword: ''
     }
   },
+  mounted () {
+    this.$bus.$on('removeKeyword', () => {
+      this.keyword = ''
+    })
+  },
   methods: {
     gosearch () {
       if (this.$route.query) {
@@ -49,8 +54,9 @@ export default {
         location.query = this.$route.query
         this.$router.push(location)
       }
-      this.keyword = ''
+      // this.keyword = ''
     }
+
   }
 }
 </script>

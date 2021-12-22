@@ -87,18 +87,17 @@ export default {
   width: 100%;
   height: 400px;
   background: #cccccc;
-  position: absolute;
-  left: 0;
-  top:2300px;
+  position: relative;
 .shopinfo{
   width: 70%;
   height: 100%;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-left: 200px;
   display: flex;
   justify-content: space-around;
   .shopList{
     list-style: none;
+    margin-top: 50px;
   }
   .shopList li:nth-child(1){
     font-size: 16px;
