@@ -6,6 +6,7 @@
   </div>
 </template>
 <script>
+console.log('分支1')
 import Header from '@/components/header'
 import Footer from '@/components/Footer/footer'
 export default {
