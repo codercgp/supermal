@@ -14,3 +14,7 @@ export const searchList = (params = {}) => requests({
   url: '/list',
   data: params
 })
+export const shopInfo = (id) => requests({
+  method: 'get',
+  url: `/item/${id}`
+})

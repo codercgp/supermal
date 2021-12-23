@@ -16,6 +16,12 @@ const routes = [
     path: '/search/:keyword?',
     name: 'Search',
     component: () => import(/* webpackChunkName: "about" */ '../views/Search/search')
+  },
+  // parmas参数必须使用占位符
+  {
+    path: '/detail/id',
+    name: 'Detail',
+    component: () => import('@/views/Detail/index')
   }
 ]
 

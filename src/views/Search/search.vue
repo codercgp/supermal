@@ -40,8 +40,8 @@
             <ul class="yui3-g">
               <li class="yui3-u-1-5" v-for="(item,index) in searchlist.goodsList" :key="index">
                 <div class="list-wrap">
-                  <div class="p-img">
-                    <a href="item.html" target="_blank"><img :src=item.defaultImg /></a>
+                  <div class="p-img" @click="goDetail(item.id)">
+                    <a  target="_blank"><img :src=item.defaultImg /></a>
                   </div>
                   <div class="price">
                     <strong>
@@ -196,6 +196,13 @@ export default {
       this.queryList.pageNo = pageNo
       // 重新发起请求   ----请求路径参数丢失
       this.getsearchData()
+    },
+    // 点击商品跳转详情页
+    goDetail (id) {
+      this.$router.push({
+        name: 'Detail',
+        params: { id: id }
+      })
     }
   },
   computed: {
