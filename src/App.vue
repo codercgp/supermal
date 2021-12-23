@@ -8,8 +8,6 @@
 <script>
 import Header from '@/components/header'
 import Footer from '@/components/Footer/footer'
-console.log('分支1')
-console.log('分支2')
 export default {
   name: 'App',
   components: {

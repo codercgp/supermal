@@ -2,35 +2,29 @@
   <div class="fr page">
     <div class="sui-pagination clearfix">
       <ul>
-        <li class="prev disabled">
-          <a href="#">«上一页</a>
+<!--        上面部分-->
+        <li  :class="pageNo==1?'prev disabled' :'prev'">
+          <a :class="pageNo==1?'prev disabled' :''" @click="$emit('getPageNo' ,pageNo-1)">«上一页</a>
         </li>
-        <li class="active">
-          <a href="#">1</a>
+        <li  :class="pageNo==1?'active':''">
+          <a href="#" v-show="startNumAndEndNum.startNum>1" @click="$emit('getPageNo',1)">1</a>
         </li>
-        <li class="dotted"><span>...</span></li>
+        <li class="dotted" v-show="startNumAndEndNum.startNum>2"><span>...</span></li>
+<!--        中间部分-->
         <li>
-          <a href="#">2</a>
+          <a href="#" v-for="(page,index) in startNumAndEndNum.endNum*1" :key="index" v-if="page >= startNumAndEndNum.startNum" @click="$emit('getPageNo',page)"  :class="pageNo==page?'active':''">{{page}}</a>
         </li>
-        <li>
-          <a href="#">3</a>
-        </li>
-        <li>
-          <a href="#">4</a>
-        </li>
-        <li>
-          <a href="#">5</a>
-        </li>
-        <li class="dotted"><span>...</span></li>
+<!--        下面部分-->
+        <li class="dotted" v-if="startNumAndEndNum.endNum<totalPage-1"><span>...</span></li>
         <li >
-          <a href="#">{{totalPage}}</a>
+          <a href="#" v-show="startNumAndEndNum.endNum<totalPage" @click="$emit('getPageNo',totalPage)"  :class="pageNo==totalPage?'active':''">{{totalPage}}</a>
         </li>
-        <li class="next">
-          <a href="#">下一页»</a>
+        <li class="next" :class="pageNo==totalPage?'disabled':''">
+          <a href="#" @click="$emit('getPageNo',pageNo+1)">下一页»</a>
         </li>
       </ul>
       <br/>
-      <span>{{startNumAndEndNum.startNum}}---结束页{{startNumAndEndNum.endNum}}===当前页码{{pageNo}} 共{{totalPage}}</span>
+      <span>开始页：{{startNumAndEndNum.startNum}}---结束页{{startNumAndEndNum.endNum}}===当前页码{{pageNo}} 共{{totalPage}}</span>
     </div>
   </div>
 </template>
@@ -52,18 +46,20 @@ export default {
         startNum = 1
         endNum = this.totalPage
       } else {
-        startNum = this.totalPage - parseInt(this.continue / 2)
-        endNum = this.totalPage + parseInt(this.continue / 2)
+        startNum = this.pageNo - parseInt(this.continue / 2)
+        endNum = this.pageNo * 1 + parseInt(this.continue / 2)
       }
       // startNum不能出现负数   当总页数为1的时候  连续的5个页码数  -10123
       // 当总页数为2的时候 连续的5个数   01234  当总页数为3的时候 连续出现的5个数 12345
-      if (this.totalPage < 2) {
+      if (startNum < 1) {
         startNum = 1
-        endNum = this.totalPage
+        endNum = this.continue
       }
       // endNum不能出现大于this.totalPage 的数
       if (endNum > this.totalPage) {
-        startNum = this.totalPage - this.continue - 1
+        console.log(this.totalPage)
+        console.log(this.continue)
+        startNum = this.totalPage - this.continue + 1
         endNum = this.totalPage
       }
 
@@ -106,7 +102,9 @@ a {
   padding: 9px 18px;
   color: #333;
 }
-
+.active{
+  background-color: #bbffaa;
+}
 &.active {
 a {
   background-color: #fff;
@@ -126,6 +124,7 @@ a {
 a {
   color: #999;
   cursor: default;
+  pointer-events: none;
 }
 }
 

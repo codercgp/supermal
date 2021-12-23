@@ -64,7 +64,7 @@
             </ul>
           </div>
 <!--          分页器-->
-          <pagination pageNo="10" pageSize="10" total="102" continue="5"/>
+          <pagination :pageNo="queryList.pageNo" :pageSize="queryList.pageSize" :total="searchlist.total" continue="5" @getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -188,6 +188,13 @@ export default {
         neworder = `${flag}:${originsort}`
       }
       this.queryList.order = neworder
+      this.getsearchData()
+    },
+    // 自定义事件 获取pageNo
+    getPageNo (pageNo) {
+      // console.log(pageNo)
+      this.queryList.pageNo = pageNo
+      // 重新发起请求   ----请求路径参数丢失
       this.getsearchData()
     }
   },
