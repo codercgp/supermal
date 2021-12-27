@@ -1,17 +1,55 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
-    <div class="event"></div>
-    <div class="big">
-      <img src="../images/s1.png" />
+    <img :src="skuDefaultImg.imgUrl" />
+    <div class="event" @mousemove="movemask" ref="parent"></div>
+    <div class="big" >
+      <img  ref="bigImg" :src="skuDefaultImg.imgUrl" />
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Zoom'
+  name: 'Zoom',
+  props: ['skuImageList'],
+  data () {
+    return {
+      currentIndex: 0
+    }
+  },
+  computed: {
+    skuDefaultImg () {
+      return this.skuImageList[this.currentIndex] || {}
+    }
+  },
+  mounted () {
+    this.$bus.$on('getImage', (index) => {
+      this.currentIndex = index
+    })
+  },
+  methods: {
+    movemask (event) {
+      const bigImg = this.$refs.bigImg
+      const mask = this.$refs.mask
+      let myLeft = event.offsetX - mask.offsetWidth / 2
+      if (myLeft <= 0) {
+        myLeft = 0
+      } else if (myLeft >= mask.offsetWidth) {
+        myLeft = mask.offsetWidth
+      }
+      let myTop = event.offsetY - mask.offsetHeight / 2
+      if (myTop <= 0) {
+        myTop = 0
+      } else if (myTop >= mask.offsetHeight) {
+        myTop = mask.offsetTop
+      }
+      mask.style.left = myLeft + 'px'
+      mask.style.top = myTop + 'px'
+      bigImg.style.left = -myLeft * 2 + 'px'
+      bigImg.style.top = -myTop * 2 + 'px'
+    }
+  }
 }
 </script>
 

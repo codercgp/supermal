@@ -1,8 +1,8 @@
 <template>
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="../images/s1.png">
+      <div class="swiper-slide" v-for="(item,index) in getImg" :key="item.id"  @click="imageHeader(index)" :class="{active:acitiveindex==index}">
+        <img :src="item.imgUrl" >
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -14,7 +14,42 @@
 
 import Swiper from 'swiper'
 export default {
-  name: 'ImageList'
+  name: 'ImageList',
+  props: ['skuImageList'],
+  data () {
+    return {
+      acitiveindex: '0'
+    }
+  },
+  computed: {
+    getImg () {
+      return this.skuImageList || []
+    }
+  },
+  watch: {
+    skuImageList (newValue, oldValue) {
+      this.$nextTick(() => {
+        new Swiper('.swiper-container', {
+          // 设置slider容器能够同时显示的slides数量(carousel模式)。同一页几张图片
+          slidesPerView: 3,
+          // 每一次切换图片个数
+          slidesPerGroup: 1,
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+          }
+
+        })
+      })
+    }
+  },
+  methods: {
+    imageHeader (index) {
+      this.$bus.$emit('getImage', index)
+      this.acitiveindex = index
+    }
+  }
 }
 </script>
 

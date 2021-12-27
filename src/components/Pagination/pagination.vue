@@ -6,21 +6,21 @@
         <li  :class="pageNo==1?'prev disabled' :'prev'">
           <a :class="pageNo==1?'prev disabled' :''" @click="$emit('getPageNo' ,pageNo-1)">«上一页</a>
         </li>
-        <li  :class="pageNo==1?'active':''">
-          <a href="#" v-show="startNumAndEndNum.startNum>1" @click="$emit('getPageNo',1)">1</a>
+        <li :class="pageNo==1?'active':''">
+          <a  v-show="startNumAndEndNum.startNum>1" @click="$emit('getPageNo',1)">1</a>
         </li>
         <li class="dotted" v-show="startNumAndEndNum.startNum>2"><span>...</span></li>
 <!--        中间部分-->
         <li>
-          <a href="#" v-for="(page,index) in startNumAndEndNum.endNum*1" :key="index" v-if="page >= startNumAndEndNum.startNum" @click="$emit('getPageNo',page)"  :class="pageNo==page?'active':''">{{page}}</a>
+          <a  v-for="(page,index) in startNumAndEndNum.endNum*1" :key="index" v-if="page >= startNumAndEndNum.startNum" @click="$emit('getPageNo',page)"  :class="pageNo==page?'active':''">{{page}}</a>
         </li>
 <!--        下面部分-->
         <li class="dotted" v-if="startNumAndEndNum.endNum<totalPage-1"><span>...</span></li>
         <li >
-          <a href="#" v-show="startNumAndEndNum.endNum<totalPage" @click="$emit('getPageNo',totalPage)"  :class="pageNo==totalPage?'active':''">{{totalPage}}</a>
+          <a  v-show="startNumAndEndNum.endNum<totalPage" @click="$emit('getPageNo',totalPage)"  :class="pageNo==totalPage?'active':''">{{totalPage}}</a>
         </li>
         <li class="next" :class="pageNo==totalPage?'disabled':''">
-          <a href="#" @click="$emit('getPageNo',pageNo+1)">下一页»</a>
+          <a  @click="$emit('getPageNo',pageNo+1)">下一页»</a>
         </li>
       </ul>
       <br/>

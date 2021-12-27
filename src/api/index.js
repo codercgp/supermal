@@ -18,3 +18,21 @@ export const shopInfo = (id) => requests({
   method: 'get',
   url: `/item/${id}`
 })
+export const addOrupdate = (skuId, skuNum) => requests({
+  method: 'post',
+  url: `/cart/addToCart/${skuId}/${skuNum}`
+})
+// 获取购物车的请求
+export const reqcart = () => requests({
+  url: '/cart/cartList',
+  method: 'get'
+})
+// 商品是否选中
+export const reqIsChecked = (skuId, isChecked) => requests({
+  method: 'get',
+  url: `/cart/checkCart/${skuId}/${isChecked}`
+})
+export const deleteShop = (skuId) => requests({
+  method: 'delete',
+  url: `/cart/deleteCart/${skuId}`
+})

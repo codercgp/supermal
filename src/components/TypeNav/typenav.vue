@@ -32,7 +32,6 @@
 
 <script>
 const throttle = require('lodash/throttle.js')
-console.log(throttle)
 export default {
   name: 'typenav',
   data: function () {

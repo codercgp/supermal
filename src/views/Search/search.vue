@@ -11,7 +11,7 @@
             </li>
           </ul>
           <ul class="fl sui-tag" style="position: relative;z-index: 9999">
-            <li class="with-x" v-show="queryList.categoryName">{{queryList.categoryName}}<i @click="removecategoryName">×</i></li>
+            <li class="with-x" v-show="queryList.categoryName">{{queryList.categoryName}}<i @click="removeCategoryName">×</i></li>
             <li class="with-x" v-show="queryList.keyword">{{queryList.keyword}}<i @click="removeKeyword">×</i></li>
             <li class="with-x" v-if="queryList.trademark">{{queryList.trademark.split(':')[1]}}<i @click="removetrademark">×</i></li>
             <li class="with-x" v-for="(item,index) in queryList.props" :key="index">{{item.split(":")[1]}}<i @click="removeattr(index)">×</i></li>
@@ -73,6 +73,7 @@
 
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
+import pagination from '@/components/Pagination/pagination'
 import { mapState } from 'vuex'
 
 export default {
@@ -95,14 +96,16 @@ export default {
     }
   },
   components: {
-    SearchSelector
+    SearchSelector,
+    pagination
   },
   beforeMount () {
     // 整理请求参数
     Object.assign(this.queryList, this.$route.query, this.$route.params)
+    console.log('text', this.queryList)
   },
   mounted () {
-    this.getsearchData()
+    this.getSearchData()
   },
   watch: {
     $route (newValue, oldvalue) {
@@ -111,7 +114,7 @@ export default {
       Object.assign(this.queryList, this.$route.query, this.$route.params)
       // console.log('this.$route.params', this.$route.params)
       // 再次发起ajax请求
-      this.getsearchData()
+      this.getSearchData()
       // 清除缓存
       this.queryList.category1Id = undefined
       this.queryList.category2Id = undefined
@@ -119,18 +122,17 @@ export default {
     }
   },
   methods: {
-    getsearchData () {
-      console.log(this.queryList)
+    getSearchData () {
       this.$store.dispatch('searchlist', this.queryList)
     },
     // // 清除面包屑的分类名称的事件回调
-    removecategoryName () {
+    removeCategoryName () {
       this.queryList.categoryName = undefined
       this.queryList.category1Id = undefined
       this.queryList.category2Id = undefined
       this.queryList.category3Id = undefined
       // 路由跳转  重新发送请求
-      this.getsearchData()
+      this.getSearchData()
       if (this.$route.params) {
         this.$router.push({ name: 'Search', params: this.$route.params })
       }
@@ -140,7 +142,7 @@ export default {
       // 清除
       this.queryList.keyword = undefined
       // 重新发起请求
-      this.getsearchData()
+      this.getSearchData()
       // 通知header兄弟组件置空
       this.$bus.$emit('removeKeyword')
       if (this.$route.query) {
@@ -150,9 +152,8 @@ export default {
     // 自定义品牌的回调
     trademarkinfo (name) {
       this.queryList.trademark = `${name.tmId}:${name.tmName}`
-      console.log(this.queryList.trademark)
       // 发送请求
-      this.getsearchData()
+      this.getSearchData()
     },
     // 自定义事件属性事件的回调
     attrInfo (a, b, c) {
@@ -162,18 +163,18 @@ export default {
         this.queryList.props.push(qery)
       }
       // 再次发送请求
-      this.getsearchData()
+      this.getSearchData()
     },
     // 清除品牌的回调
     removetrademark () {
       this.queryList.trademark = undefined
-      this.getsearchData()
+      this.getSearchData()
     },
     // 清除props中的属性
     removeattr (index) {
       this.queryList.props.splice(index, 1)
       // 再次发送请求
-      this.getsearchData()
+      this.getSearchData()
     },
     // 判断当前用户点击的是价格还是综合
     isone (flag) {
@@ -188,20 +189,22 @@ export default {
         neworder = `${flag}:${originsort}`
       }
       this.queryList.order = neworder
-      this.getsearchData()
+      this.getSearchData()
     },
     // 自定义事件 获取pageNo
     getPageNo (pageNo) {
       // console.log(pageNo)
       this.queryList.pageNo = pageNo
-      // 重新发起请求   ----请求路径参数丢失
-      this.getsearchData()
+      this.getSearchData()
+      // this.$store.dispatch('searchlist', this.queryList)
+      // window.history.pushState({}, {}, window.location.href)
+      // console.log(window.location.href)
     },
     // 点击商品跳转详情页
     goDetail (id) {
       this.$router.push({
         name: 'Detail',
-        params: { id: id }
+        query: { id: id }
       })
     }
   },

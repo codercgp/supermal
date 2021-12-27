@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import typenav from '@/components/TypeNav/typenav'
 import store from '@/store'
-import pagination from '@/components/Pagination/pagination'
+// import pagination from '@/components/Pagination/pagination'
 // 全局引入swiper样式
 import 'swiper/css/swiper.min.css'
 
@@ -15,7 +15,7 @@ Vue.use(ElementUI)
 
 // 全局注册三级联动的组件
 Vue.component('typenav', typenav)
-Vue.component('pagination', pagination)
+// Vue.component('pagination', pagination)
 Vue.config.productionTip = false
 
 new Vue({
