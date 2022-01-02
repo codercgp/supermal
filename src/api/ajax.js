@@ -3,7 +3,6 @@ import axios from 'axios'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store'
-console.log(store)
 const requests = axios.create({
   baseURL: '/api',
   timeout: 5000
@@ -14,6 +13,9 @@ requests.interceptors.request.use((config) => {
   // 如果有uuid 则 添加到请求头中
   if (store.state.detail.uuid) {
     config.headers.userTempId = store.state.detail.uuid
+  }
+  if (localStorage.getItem('TOKEN')) {
+    config.headers.token = localStorage.getItem('TOKEN')
   }
   return config
 })

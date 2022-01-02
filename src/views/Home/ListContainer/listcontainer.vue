@@ -141,8 +141,8 @@ export default {
 .listcontainer{
   width: 1050px;
   height: 450px;
-  margin-left: 21%;
-  margin-top: 11%;
+  float: right;
+  margin-right: 52px;
   .imgwarp{
     width: 800px;
     height:450px;
@@ -198,7 +198,6 @@ export default {
         box-sizing: border-box;
         border-left: 1px solid #e4e4e4;
         border-bottom: 1px solid #e4e4e4;
-        //margin-right: -1px;
         height: 64px;
         text-align: center;
         position: relative;

@@ -17,7 +17,6 @@ const mutations = {
     state.bannerimages = res
   },
   GETSHOPLIST (state, res) {
-    console.log(res)
     state.shoplist = res
   }
 }
@@ -42,7 +41,6 @@ const actions = {
   // 获取home 的商品信息
   async getshopList ({ commit }) {
     const res = await shopList()
-    console.log(res.data)
     if (res.code === 200) {
       commit('GETSHOPLIST', res.data)
     }

@@ -2,9 +2,18 @@
   <header class="header">
     <div class="leftWarp">
       <span>尚品汇欢迎您！</span>
-      <a>请登录</a>
-      <span class="icon">|</span>
-      <a>免费注册</a>
+<!--      当前是未登录状态-->
+      <p v-if="!userName">
+        <a @click="goLogin">请登录</a>
+        <span class="icon">|</span>
+        <a @click="goregister">免费注册</a>
+      </p>
+<!--当前是登陆状态-->
+      <p v-else>
+       <a>{{userName}}</a>
+        <span class="icon">|</span>
+        <a class="register" @click="goOut">退出登录</a>
+      </p>
     </div>
     <div class="rightWarp">
       <a>我的订单</a>
@@ -33,13 +42,17 @@
   </header>
 </template>
 <script>
-
 export default {
   name: 'myheader',
   data () {
     return {
       // 双向绑定input
       keyword: ''
+    }
+  },
+  computed: {
+    userName () {
+      return this.$store.state.user.userInfo.name
     }
   },
   mounted () {
@@ -54,8 +67,27 @@ export default {
         location.query = this.$route.query
         this.$router.push(location)
       }
+    },
+    goregister () {
+      this.$router.replace({ name: 'Register' })
+    },
+    goLogin () {
+      this.$router.replace({ name: 'Login' })
+    },
+    async  goOut () {
+      // 退出登录
+      try {
+        await this.$store.dispatch('userOut')
+        this.$router.push({ name: 'Home' })
+        // 【清除一些数据：token】
+        // 2:清除项目当中的数据【userInfo、token】
+        localStorage.removeItem('TOKEN')
+        this.$store.state.user.userInfo = {}
+        this.$store.state.user.token = ''
+      } catch (e) {
+        this.$message.error('网络错误')
+      }
     }
-
   }
 }
 </script>
@@ -73,7 +105,7 @@ export default {
     text-align: center;
     line-height: 1.8rem;
     font-size: 14px;
-
+  display: flex;
     span:nth-child(1) {
       margin-right: 10px;
     }

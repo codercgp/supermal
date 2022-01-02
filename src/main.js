@@ -6,11 +6,13 @@ import store from '@/store'
 // import pagination from '@/components/Pagination/pagination'
 // 全局引入swiper样式
 import 'swiper/css/swiper.min.css'
-
+// 引入api 请求文件
+import * as API from '@/api/index'
 // 引入mock数据
 import './mock/mockServe'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+console.log(API)
 Vue.use(ElementUI)
 
 // 全局注册三级联动的组件
@@ -24,6 +26,7 @@ new Vue({
   // 安装全局事件总线
   beforeCreate () {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   render: h => h(App)
 }).$mount('#app')

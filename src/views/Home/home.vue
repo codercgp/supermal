@@ -27,6 +27,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('getshopList')
+    this.$store.dispatch('getUserInfos')
   },
   computed: {
     ...mapState({

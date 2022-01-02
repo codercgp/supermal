@@ -47,9 +47,9 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
-        <a href="#none">移到我的关注</a>
-        <a href="#none">清除下柜商品</a>
+        <a @click="deleteShopAll">删除选中的商品</a>
+        <a >移到我的关注</a>
+        <a >清除下柜商品</a>
       </div>
       <div class="money-box">
         <div class="chosed">已选择
@@ -59,7 +59,7 @@
           <i class="summoney">{{addPrice}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <a class="sum-btn" @click="goTrade" target="_blank">结算</a>
         </div>
       </div>
     </div>
@@ -96,14 +96,6 @@ export default {
     // eslint-disable-next-line vue/return-in-computed-property
     isAllchecked () {
       return this.cartInfoList.every(item => item.isChecked == 1)
-      // for (var i = 0; i < this.cartInfoList.length; i++) {
-      //   console.log(i)
-      //   if (this.cartInfoList[i].isChecked == 1) {
-      //     return true
-      //   } else {
-      //     return false
-      //   }
-      // }
     }
   },
   watch: {
@@ -113,6 +105,13 @@ export default {
     }
   },
   methods: {
+    // 去结算
+    goTrade () {
+      this.$router.push('/trade')
+    },
+    isChecked () {
+      return this.cartInfoList.every(item => item.isChecked == 1)
+    },
     getData () {
       this.$store.dispatch('getCart')
     },
@@ -127,6 +126,16 @@ export default {
         this.$message.error('网络错误')
       }
     },
+    // 删除多个商品
+    deleteShopAll () {
+      this.cartInfoList.forEach((item) => {
+        if (item.isChecked == 1) {
+          this.$store.dispatch('shopDelete', item.skuId)
+        }
+        this.getData()
+      })
+    },
+
     headler: throttle(async function (type, disNum, item) {
       if (type === 'add') {
         disNum = 1
@@ -174,16 +183,14 @@ export default {
     },
     // 是否全选的回调
     checkChange (event) {
-      this.cartInfoList.every(item => item.isChecked == 1)
-      // let isChecked = ''
-      // this.cartInfoList.forEach((item) => {
-      //   isChecked = event.target.checked ? '1' : '0'
-      //   if (isChecked == '1') {
-      //     isChecked = '0'
-      //   } else {
-      //     isChecked == '1'
-      //   }
-      // })
+      this.cartInfoList.forEach((item) => {
+        const isChecked = event.target.checked
+        if (isChecked == '1') {
+          item.isChecked = '1'
+        } else {
+          item.isChecked = '0'
+        }
+      })
     }
   }
 }

@@ -102,7 +102,6 @@ export default {
   beforeMount () {
     // 整理请求参数
     Object.assign(this.queryList, this.$route.query, this.$route.params)
-    console.log('text', this.queryList)
   },
   mounted () {
     this.getSearchData()
@@ -193,12 +192,8 @@ export default {
     },
     // 自定义事件 获取pageNo
     getPageNo (pageNo) {
-      // console.log(pageNo)
       this.queryList.pageNo = pageNo
       this.getSearchData()
-      // this.$store.dispatch('searchlist', this.queryList)
-      // window.history.pushState({}, {}, window.location.href)
-      // console.log(window.location.href)
     },
     // 点击商品跳转详情页
     goDetail (id) {

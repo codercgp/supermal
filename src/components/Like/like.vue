@@ -58,7 +58,7 @@ export default {
 .like{
   margin-left: 150px;
   margin-right: 150px;
-  margin-top: 50px;
+  margin-top: 20px;
   .likeHeader{
     display: flex;
     justify-content: space-between;

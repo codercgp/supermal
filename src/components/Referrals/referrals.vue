@@ -58,7 +58,9 @@ export default {
 <style  lang="less" scoped>
 .referrals{
   width: 100%;
-  margin-top: 20px;
+  margin-top: 500px;
+  margin-left: 2%;
+
   .referralsList{
     list-style: none;
     display: flex;

@@ -2,20 +2,34 @@
   <div class="typenav">
     <ul class="typenavList">
       <li class="firstItem"  >
-        <a href=""  class="allshop" @mouseenter="isshowshop" >全部商品分类  </a>
-          <div class="shopwarp"  @mouseleave="isshowleave" @click="gosearch($event)">
-            <div class="one"  >
+        <a href=""  class="allshop" @mouseenter="isshowshop" >全部商品分类
+          <div class="shopwarp"  @mouseleave="isshowleave"  @click="gosearch($event)">
+            <div class="one"  ref="one">
               <div v-show="isshowOne" class="leftList" v-for="(c1,index) in shopList" :key="index">
-                <span :data-name="c1.categoryName"  :data-category1Id="c1.categoryId" @mouseenter="itemHover(c1)" @mouseleave="notHover()">{{ c1.categoryName }}</span>
+                <span :data-name="c1.categoryName"  :data-category1Id="c1.categoryId" @mouseenter="itemHover(c1)" @mouseleave="notHover()" >{{ c1.categoryName }}</span>
               </div>
             </div>
-            <div v-show="two.isHover" class="two" @mouseenter="itemHovertwo" @mouseleave="itemHoverclose">
-            <div   class="rightitem" v-for="(item,index) in two.arrayItems.categoryChild" :key="index">
-              <h3 style="display: inline-block" :data-name="item.categoryName" :data-category2Id="item.categoryId">{{ item.categoryName }}</h3>
-              <span   v-for="itemChild in item.categoryChild" :data-name="item.categoryName" :data-category3Id="itemChild.categoryId"> {{itemChild.categoryName}} </span>
+            <div v-show="two.isHover" class="two" @mouseenter="itemHovertwo" @mouseleave="itemHoverclose" >
+              <div   class="rightitem" v-for="(item,index) in two.arrayItems.categoryChild" :key="index">
+                <h3 style="display: inline-block" :data-name="item.categoryName" :data-category2Id="item.categoryId">{{ item.categoryName }}</h3>
+                <span   v-for="itemChild in item.categoryChild" :data-name="item.categoryName" :data-category3Id="itemChild.categoryId" > {{itemChild.categoryName}} </span>
+              </div>
             </div>
           </div>
-          </div>
+        </a>
+<!--          <div class="shopwarp"  @mouseleave="isshowleave" @click="gosearch($event)">-->
+<!--            <div class="one"  >-->
+<!--              <div v-show="isshowOne" class="leftList" v-for="(c1,index) in shopList" :key="index">-->
+<!--                <span :data-name="c1.categoryName"  :data-category1Id="c1.categoryId" @mouseenter="itemHover(c1)" @mouseleave="notHover()">{{ c1.categoryName }}</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div v-show="two.isHover" class="two" @mouseenter="itemHovertwo" @mouseleave="itemHoverclose">-->
+<!--            <div   class="rightitem" v-for="(item,index) in two.arrayItems.categoryChild" :key="index">-->
+<!--              <h3 style="display: inline-block" :data-name="item.categoryName" :data-category2Id="item.categoryId">{{ item.categoryName }}</h3>-->
+<!--              <span   v-for="itemChild in item.categoryChild" :data-name="item.categoryName" :data-category3Id="itemChild.categoryId"> {{itemChild.categoryName}} </span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          </div>-->
       </li>
       <li><a href="">服装城</a></li>
       <li><a href="">美妆馆</a></li>
@@ -52,7 +66,7 @@ export default {
     }
   },
   methods: {
-    //
+    // 鼠标移入二级分类，二级分类显示
     itemHovertwo () {
       this.two.isHover = true
     },
@@ -60,12 +74,15 @@ export default {
     isshowshop () {
       // 如果当前不是home页面  不显示
       this.isshowOne = true
+      this.$refs.one.style.backgroundColor = 'white'
     },
     // 鼠标移出，
     isshowleave () {
       if (this.$route.path !== '/') {
-        console.log('鼠标移出一级分类')
         this.isshowOne = false
+        this.$refs.one.style.backgroundColor = 'transparent'
+      } else {
+        console.log('鼠标移除 Home页面')
       }
     },
     itemHover: throttle(function (item) {
@@ -76,6 +93,7 @@ export default {
     notHover: function () {
       this.two.isHover = false
     },
+    // 鼠标离开  二级分类隐藏
     itemHoverclose () {
       this.two.isHover = false
     },
@@ -84,7 +102,6 @@ export default {
       // 携带query参数，categoryName与当前对应的分类Id
       const location = { name: 'Search' }
       const query = { categoryName: event.target.dataset.name }
-      // console.log(event.target.dataset)
       if (event.target.dataset.category1id) {
         // 标识当前在一级分类
         query.category1Id = event.target.dataset.category1id
@@ -95,6 +112,7 @@ export default {
         query.category3Id = event.target.dataset.category3id
       }
       if (this.$route.params) {
+        debugger
         location.query = query
         location.params = this.$route.params
         this.$router.push(location)
@@ -111,9 +129,7 @@ export default {
 
 <style lang="less" scoped>
 .typenav {
-  position: absolute;
-  top: 150px;
-  left: -150px;
+  margin-top: 150px;
   width: 100%;
   height: 45px;
   display: flex;
@@ -122,7 +138,7 @@ export default {
   border-bottom: 3px solid orangered;
 
   .typenavList {
-    width: 914px;
+    width: 1200px;
     height: 100%;
     float: left;
     list-style: none;
@@ -144,23 +160,23 @@ export default {
     }
 
   }
-
-  .allshop:hover {
-    .leftList {
-      display: block;
-    }
-  }
+.allshop{
+  position: relative;
+}
   .leftList{
     height: 25px;
     span{
-      display: inline-block;
+      display: block;
       width: 100%;
       height: 100%;
     }
   }
 .leftList:hover{
-  background-color: #bfa;
+  background-color: orangered;
 }
+  .typenavList .firstItem{
+    position: relative;
+  }
   .typenavList .firstItem a:nth-child(1) {
     width: 210px;
     height: 45px;
@@ -168,34 +184,41 @@ export default {
     font-size: 25px;
     color: #fff;
   }
-
   .shopwarp {
     position: absolute;
-    top: 47px;
-    left: 320px;
+    top: 42px;
     width: 1100px;
     height: 450px;
     font-size: 14px;
     .one{
       float: left;
       width: 145px;
-      position: relative;
-      background-color: #eeeeee;
+      height: 100%;
+      position: absolute;
+      top:0;
+      left: 0;
       z-index: 999;
+      color: black;
+      background-color: white;
+      text-indent: 5px;
+      line-height: 25px;
     }
 
     .two{
-      float: left;
-      position: relative;
+       position: absolute;
+      left: 145px;
       z-index: 999;
-      width: 801px;
+      width: 870px;
       height: 100%;
-       background: #eeeeee;
+      color: black;
+      background-color: white;
     }
     .rightitem{
       width: 100%;
       h3{
         height: 20px;
+        //text-indent: 20px;
+        padding-left: 20px;
       }
       span{
         height: 20px;
