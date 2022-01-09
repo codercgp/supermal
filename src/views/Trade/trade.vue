@@ -160,7 +160,7 @@ export default {
           })
         } else {
           this.$message.error(res.message)
-          this.$router.replace('/login')
+          this.$router.replace('/cart')
         }
       })
     }

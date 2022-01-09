@@ -84,8 +84,10 @@ export default {
         try {
           await this.$store.dispatch('getUserInfo', { phone: this.phone, password: this.password })
           if (this.$route.query.redirect) {
+            console.log('this.$route.query.redirect', this.$route.query.redirect)
             this.$router.replace(`${this.$route.query.redirect}`)
           } else {
+            console.log('没有query参数，跳转home')
             this.$router.replace({ name: 'Home' })
           }
         } catch (e) {

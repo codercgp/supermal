@@ -1,0 +1,36 @@
+
+[
+  {
+    "id": 1,
+    "userAddress": "上海市新凯二期",
+    "userId": 2,
+    "provinceId": 1,
+    "consignee": "张小虎",
+    "phoneNum": "18101085318",
+    "isDefault": "0",
+    "regionId": 1,
+    "fullAddress": "上海市新凯二期"
+  },
+  {
+    "id": 2,
+    "userAddress": "徐汇区",
+    "userId": 2,
+    "provinceId": 1,
+    "consignee": "张小胖",
+    "phoneNum": "18801999967",
+    "isDefault": "1",
+    "regionId": 1,
+    "fullAddress": "上海市徐汇区"
+  },
+  {
+    "id": 3,
+    "userAddress": "上海市松江区",
+    "userId": 2,
+    "provinceId": 1,
+    "consignee": "张大肥",
+    "phoneNum": "13812341234",
+    "isDefault": "0",
+    "regionId": 1,
+    "fullAddress": "松江区"
+  }
+  ]

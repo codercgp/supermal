@@ -75,37 +75,38 @@
             </div>
             <div class="orders">
 
-              <table class="order-item" v-for="(item,index) in this.data.records" :key="index">
+              <table class="order-item" v-for="(list,index) in this.data.records" :key="index">
                 <thead>
                   <tr>
                     <th colspan="5">
-                      <span class="ordertitle">{{item.createTime}}　订单编号：{{item.outTradeNo}}
-                         <span class="pull-right delete"><img src="./images/delete.png"></span></span>
+                      <span class="ordertitle">{{list.createTime}}　订单编号：{{list.outTradeNo}}
+<!--                         <span class="pull-right delete"><img src="./images/delete.png"></span>-->
+                      </span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item1,index) in item.orderDetailList" :key="index">
+                  <tr v-for="(item,index) in list.orderDetailList" :key="index">
                     <td width="60%">
                       <div class="typographic">
-                        <img src="./images/goods.png">
-                        <a href="#" class="block-text">{{item.tradeBody}}</a>
-                        <span>x1</span>
-                        <a href="#" class="service">售后申请</a>
+                        <img :src="item.imgUrl" style="width: 100px;height: 100px">
+                        <a class="block-text">{{item.tradeBody}}</a>
+                        <span>x{{item.skuNum}}</span>
+                        <a  class="service">售后申请</a>
                       </div>
                     </td>
-                    <td rowspan="2" width="8%" class="center">小丽</td>
-                    <td rowspan="2" width="13%" class="center">
+                    <td :rowspan="item.length" width="8%" class="center">{{list.consignee}}</td>
+                    <td :rowspan="item.length" width="13%" class="center">
                       <ul class="unstyled">
-                        <li>总金额¥138.00</li>
+                        <li>{{item.orderPrice}}</li>
                         <li>在线支付</li>
 
                       </ul>
                     </td>
-                    <td rowspan="2" width="8%" class="center">
-                      <a href="#" class="btn">已完成 </a>
+                    <td :rowspan="item.length" width="8%" class="center">
+                      <a  class="btn">已完成 </a>
                     </td>
-                    <td rowspan="2" width="13%" class="center">
+                    <td :rowspan="item.length" width="13%" class="center">
                       <ul class="unstyled">
                         <li>
                           <a href="mycomment.html" target="_blank">评价|晒单</a>
@@ -128,7 +129,7 @@
               </table>
             </div>
             <div class="choose-order">
-                  <pagination class="pagination" pageNo="1" pageSize="5" continue="5" total="80"/>
+                  <pagination class="pagination" :pageNo="data.current" :pageSize="data.size" continue="5" :total="data.total" @getPageNo="getPageNo"/>
             </div>
           </div>
           <!--猜你喜欢-->
@@ -199,7 +200,6 @@
 
 <script>
 import pagination from '@/components/Pagination/pagination'
-import { reqMyOrder } from '@/api'
 export default {
   name: 'Center',
   components: {
@@ -219,8 +219,21 @@ export default {
       console.log(res)
       if (res.code == 200) {
         this.data = res.data
+      } else {
+        this.$message.error('网络不稳定稍后重试')
+        this.$router.replace('/login')
       }
+    }).catch(() => {
+      this.$message.error('网络不稳定稍后重试')
+      this.$router.replace('/login')
     })
+  },
+  methods: {
+    getPageNo (pageNo) {
+      console.log('pageNo', pageNo)
+      this.data.current = pageNo
+      this.$API.reqMyOrder(this.data.current, this.data.size)
+    }
   }
 }
 </script>
@@ -319,8 +332,10 @@ export default {
 
             // 表单内容
             .orders {
+              //width: 700px;
+              height: 600px;
               font-size: 12px;
-
+               overflow: hidden;
               a {
                 &:hover {
                   color: #4cb9fc;

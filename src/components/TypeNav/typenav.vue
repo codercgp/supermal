@@ -2,7 +2,7 @@
   <div class="typenav">
     <ul class="typenavList">
       <li class="firstItem"  >
-        <a href=""  class="allshop" @mouseenter="isshowshop" >全部商品分类
+        <a   class="allshop" @mouseenter="isshowshop" >全部商品分类 </a>
           <div class="shopwarp"  @mouseleave="isshowleave"  @click="gosearch($event)">
             <div class="one"  ref="one">
               <div v-show="isshowOne" class="leftList" v-for="(c1,index) in shopList" :key="index">
@@ -16,7 +16,7 @@
               </div>
             </div>
           </div>
-        </a>
+
 <!--          <div class="shopwarp"  @mouseleave="isshowleave" @click="gosearch($event)">-->
 <!--            <div class="one"  >-->
 <!--              <div v-show="isshowOne" class="leftList" v-for="(c1,index) in shopList" :key="index">-->
@@ -81,8 +81,7 @@ export default {
       if (this.$route.path !== '/') {
         this.isshowOne = false
         this.$refs.one.style.backgroundColor = 'transparent'
-      } else {
-        console.log('鼠标移除 Home页面')
+        this.$refs.one.style.zIndex = '1'
       }
     },
     itemHover: throttle(function (item) {
@@ -112,7 +111,6 @@ export default {
         query.category3Id = event.target.dataset.category3id
       }
       if (this.$route.params) {
-        debugger
         location.query = query
         location.params = this.$route.params
         this.$router.push(location)

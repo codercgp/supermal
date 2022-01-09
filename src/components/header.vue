@@ -16,9 +16,9 @@
       </p>
     </div>
     <div class="rightWarp">
-      <a>我的订单</a>
+      <router-link to="/center">我的订单</router-link>
       <span>|</span>
-      <a>我的购物车</a>
+      <router-link to="/cart">我的购物车</router-link>
       <span>|</span>
       <a>我的商品会</a>
       <span>|</span>

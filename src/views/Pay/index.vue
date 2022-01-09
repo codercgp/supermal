@@ -137,6 +137,7 @@ export default {
         if (!this.timer) {
           this.timer = setInterval(() => {
             this.$API.reqPayed(this.$route.query.orderId).then((res) => {
+              console.log('/pay', res)
               if (res.code == 200) {
                 // 保存code
                 this.code = 200

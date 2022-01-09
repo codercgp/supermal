@@ -47,7 +47,6 @@ export default {
   border: 1px solid #ddd;
   margin-bottom: 5px;
   overflow: hidden;
-  //margin-top: 150px;
   .logo {
     border-top: 0;
     margin: 0;

@@ -10,7 +10,7 @@
               <a href="#">全部结果</a>
             </li>
           </ul>
-          <ul class="fl sui-tag" style="position: relative;z-index: 9999">
+          <ul class="fl sui-tag" >
             <li class="with-x" v-show="queryList.categoryName">{{queryList.categoryName}}<i @click="removeCategoryName">×</i></li>
             <li class="with-x" v-show="queryList.keyword">{{queryList.keyword}}<i @click="removeKeyword">×</i></li>
             <li class="with-x" v-if="queryList.trademark">{{queryList.trademark.split(':')[1]}}<i @click="removetrademark">×</i></li>
@@ -121,6 +121,7 @@ export default {
     }
   },
   methods: {
+
     getSearchData () {
       this.$store.dispatch('searchlist', this.queryList)
     },
@@ -222,14 +223,13 @@ export default {
     .bread {
       margin-bottom: 5px;
       overflow: hidden;
-     margin-top: 180px;
+     margin-top: 10px;
       .sui-breadcrumb {
         padding: 3px 15px;
         margin: 0;
         font-weight: 400;
         border-radius: 3px;
         float: left;
-
         li {
           display: inline-block;
           line-height: 18px;
